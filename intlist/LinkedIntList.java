@@ -98,8 +98,18 @@ public class LinkedIntList {
 
     /** Moves the first integer to the back of the list. */
     public static void firstToLast(LinkedIntList L) {
-        // TODO: your code here
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (L != null) {
+            if (L.front != null && L.front.next != null) {
+                ListNode back = L.front; // save front
+                L.front = back.next;
+                back.next = null;
+                ListNode curr = L.front; // find the end of list
+                while (curr.next != null) {
+                    curr = curr.next;
+                }
+                curr.next = back;
+            }
+        }
     }
 
     /**
@@ -107,8 +117,18 @@ public class LinkedIntList {
      * use 'new'.
      */
     public static void extend(LinkedIntList A, LinkedIntList B) {
-        // TODO: your code here
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (A != null && B != null) {
+            if (A.front == null) {
+                // List A is empty
+                A.front = B.front;
+            } else {
+                ListNode curr = A.front; // find the end of list A
+                while (curr.next != null) {
+                    curr = curr.next;
+                }
+                curr.next = B.front;
+            }
+        }
     }
 
     /**
@@ -116,8 +136,41 @@ public class LinkedIntList {
      * of B. May NOT modify items of A or B. Use 'new'.
      */
     public static LinkedIntList concatenated(LinkedIntList A, LinkedIntList B) {
-        // TODO: your code here
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (A == null || B == null) {
+            return null;
+        }
+
+        ListNode front = null;
+        ListNode curr = null;
+        ListNode p;
+        // loop through A
+        if (A.front != null) {
+            p = A.front;
+            front = new ListNode(p.data);
+            curr = front;
+            p = p.next;
+            while (p != null) {
+                curr.next = new ListNode(p.data);
+                curr = curr.next;
+                p = p.next;
+            }
+        }
+        // loop through B
+        if (B.front != null) {
+            p = B.front;
+            if (front == null) {
+                front = new ListNode(p.data);
+                curr = front;
+                p = p.next;
+            }
+            while (p != null) {
+                curr.next = new ListNode(p.data);
+                curr = curr.next;
+                p = p.next;
+            }
+        }
+
+        return new LinkedIntList(front);
     }
 
     // You don't need to look at or understand the methods below this comment.
