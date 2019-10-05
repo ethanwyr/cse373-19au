@@ -252,7 +252,7 @@ public class LinkedIntList {
         int cycleLocation = detectCycles();
         int position = 0;
         String result = "(" + front.data;
-        for (ListNode p = front; p != null; p = p.next) {
+        for (ListNode p = front.next; p != null; p = p.next) {
             result += ", " + p.data;
             position += 1;
             if (cycleLocation > 0 && position > cycleLocation) {
