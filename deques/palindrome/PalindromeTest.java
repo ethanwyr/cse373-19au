@@ -24,16 +24,16 @@ public class PalindromeTest {
     public void testisPalindromeSimple() {
         assertTrue(palindrome.isPalindrome(""));
         assertTrue(palindrome.isPalindrome("w"));
-        assertTrue(palindrome.isPalindrome("y"));
+        assertTrue(palindrome.isPalindrome("Y"));
     }
 
     @Test
     public void testisPalindromeEven() {
         assertTrue(palindrome.isPalindrome("ww"));
         assertTrue(palindrome.isPalindrome("wxxw"));
-        assertTrue(palindrome.isPalindrome("wxyyxw"));
+        assertTrue(palindrome.isPalindrome("WXYYXW"));
         assertTrue(palindrome.isPalindrome("abcdefghiihgfedcba"));
-        assertFalse(palindrome.isPalindrome("wy"));
+        assertFalse(palindrome.isPalindrome("WY"));
         assertFalse(palindrome.isPalindrome("abcbba"));
         assertFalse(palindrome.isPalindrome("abcdefgh"));
     }
@@ -42,9 +42,9 @@ public class PalindromeTest {
     public void testisPalindromeOdd() {
         assertTrue(palindrome.isPalindrome("www"));
         assertTrue(palindrome.isPalindrome("wxyxw"));
-        assertTrue(palindrome.isPalindrome("wxyzyxw"));
+        assertTrue(palindrome.isPalindrome("WXYZYXW"));
         assertTrue(palindrome.isPalindrome("abcdefghihgfedcba"));
-        assertFalse(palindrome.isPalindrome("wyy"));
+        assertFalse(palindrome.isPalindrome("WYY"));
         assertFalse(palindrome.isPalindrome("abccbba"));
         assertFalse(palindrome.isPalindrome("abcdefghi"));
     }
@@ -59,8 +59,13 @@ public class PalindromeTest {
         assertTrue(palindrome.isPalindrome("bcfgheda", obo));
         assertTrue(palindrome.isPalindrome("wyx", obo));
         assertTrue(palindrome.isPalindrome("wwyzxx", obo));
+        assertTrue(palindrome.isPalindrome("ADCB", obo));
+        assertTrue(palindrome.isPalindrome("()", obo));
 
         assertFalse(palindrome.isPalindrome("wyr", obo));
         assertFalse(palindrome.isPalindrome("wwyyxx", obo));
+        assertFalse(palindrome.isPalindrome("Ab", obo));
+        assertFalse(palindrome.isPalindrome("VV", obo));
+        assertFalse(palindrome.isPalindrome("<>", obo));
     }
 }
