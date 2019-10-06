@@ -8,10 +8,11 @@ public class PalindromeFinder {
         int minLength = 4;
         In in = new In("data/words.txt");
         Palindrome palindrome = new Palindrome();
+        OffByOne obo = new OffByOne();
 
         while (!in.isEmpty()) {
             String word = in.readString();
-            if (word.length() >= minLength && palindrome.isPalindrome(word)) {
+            if (word.length() >= minLength && palindrome.isPalindrome(word, obo)) {
                 System.out.println(word);
             }
         }
