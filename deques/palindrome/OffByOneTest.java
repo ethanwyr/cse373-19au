@@ -21,11 +21,11 @@ public class OffByOneTest {
         assertFalse(offByOne.equalChars('w', 'w'));
         assertFalse(offByOne.equalChars('a', 'c'));
         assertFalse(offByOne.equalChars('g', 'c'));
-        assertFalse(offByOne.equalChars('G', 'q'));
-        assertFalse(offByOne.equalChars('s', 'Z'));
+        assertFalse(offByOne.equalChars('A', 'b'));
+        assertFalse(offByOne.equalChars('y', 'Z'));
         assertFalse(offByOne.equalChars('X', 'x'));
-        assertFalse(offByOne.equalChars('Y', 'Y'));
-        assertFalse(offByOne.equalChars('G', 'Q'));
+        assertFalse(offByOne.equalChars('@', 'a'));
+        assertFalse(offByOne.equalChars('`', 'A'));
         assertFalse(offByOne.equalChars('S', 'Z'));
         assertFalse(offByOne.equalChars('+', '='));
     }
