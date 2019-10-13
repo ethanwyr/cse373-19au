@@ -1,15 +1,23 @@
 package autocomplete;
 
+import java.util.Objects;
+
 public class Term implements Comparable<Term> {
-    // TODO: add fields as necessary
+    private String query;
+    private long weight;
 
     /**
      * Initializes a term with the given query string and weight.
      * @throws IllegalArgumentException if query is null or weight is negative
      */
     public Term(String query, long weight) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (query == null) {
+            throw new IllegalArgumentException("Query is null.");
+        } else if (weight < 0) {
+            throw new IllegalArgumentException("Weight is negative.");
+        }
+        this.query = query;
+        this.weight = weight;
     }
 
     /**
@@ -17,14 +25,24 @@ public class Term implements Comparable<Term> {
      * @throws NullPointerException if the specified object is null
      */
     public int compareTo(Term that) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (that == null) {
+            throw new IllegalArgumentException("Specified term is null.");
+        }
+        return this.query.compareTo(that.query);
     }
 
     /** Compares to another term, in descending order by weight. */
     public int compareToByReverseWeightOrder(Term that) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (that == null) {
+            throw new IllegalArgumentException("Specified term is null.");
+        }
+        if (this.weight > that.weight) {
+            return -1; // this in the front (less than)
+        } else if (this.weight < that.weight) {
+            return 1; // this in the back (great than)
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -34,14 +52,23 @@ public class Term implements Comparable<Term> {
      * @throws IllegalArgumentException if r < 0
      */
     public int compareToByPrefixOrder(Term that, int r) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (that == null) {
+            throw new IllegalArgumentException("Specified term is null.");
+        } else if (r < 0) {
+            throw new IllegalArgumentException("r is smaller than 0.");
+        }
+        if (r > this.query.length()) {
+            r = this.query.length();
+        }
+        if (r > that.query.length()) {
+            r = that.query.length();
+        }
+        return this.query.substring(0, r).compareTo(that.query.substring(0, r));
     }
 
     /** Returns this term's query. */
     public String query() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        return this.query;
     }
 
     /**
@@ -50,13 +77,43 @@ public class Term implements Comparable<Term> {
      * @throws IllegalArgumentException if r < 0
      */
     public String queryPrefix(int r) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        if (r < 0) {
+            throw new IllegalArgumentException("r is smaller than 0.");
+        }
+        if (r > this.query.length()) {
+            r = this.query.length();
+        }
+        return this.query.substring(0, r);
     }
 
     /** Returns this term's weight. */
     public long weight() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet: replace this with your code.");
+        return this.weight;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Term term = (Term) o;
+        return weight == term.weight &&
+                Objects.equals(query, term.query);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(query, weight);
+    }
+
+    @Override
+    public String toString() {
+        return "Term{" +
+                "query='" + query + '\'' +
+                ", weight=" + weight +
+                '}' + "\n";
     }
 }
