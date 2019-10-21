@@ -75,4 +75,27 @@ public class ArrayHeapMinPQTest {
         }
     }
 
+    @Test
+    public void testNegativeHash() {
+        ArrayHeapMinPQ<Integer> minPQ = new ArrayHeapMinPQ<>();
+        minPQ.add(-1, 1);
+        minPQ.add(2, 2);
+        minPQ.add(-3, 3);
+        minPQ.add(4, 4);
+        minPQ.add(-5, 5);
+        minPQ.add(6, 4);
+        minPQ.add(-7, 5);
+        minPQ.add(8, 6);
+        minPQ.add(-9, 6);
+        assertEquals(9, minPQ.size());
+        assertEquals(-1, (int) minPQ.getSmallest());
+        assertTrue(minPQ.contains(-1));
+        assertEquals(-1, (int) minPQ.removeSmallest());
+        assertFalse(minPQ.contains(-1));
+        assertEquals(8, minPQ.size());
+        minPQ.add(-1, 2);
+        minPQ.changePriority(-9, 1);
+        assertEquals(-9, (int) minPQ.getSmallest());
+        minPQ.changePriority(-9, 10);
+    }
 }

@@ -62,7 +62,11 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
         @Override
         public int hashCode() {
-            return item.hashCode();
+            int h = item.hashCode();
+            if (h < 0) {
+                return -h;
+            }
+            return h;
         }
     }
 
