@@ -260,6 +260,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         while (curr != null) {
             if (curr.equals(goal)) {
                 curr.setPriority(priority);
+                sink(curr.loc);
                 swim(curr.loc);
                 break;
             }

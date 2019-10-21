@@ -33,6 +33,7 @@ public class ArrayHeapMinPQTest {
         minPQ.add('W', 2);
         minPQ.changePriority('N', 1);
         assertEquals('N', (char) minPQ.getSmallest());
+        minPQ.changePriority('N', 10);
     }
 
     @Test
