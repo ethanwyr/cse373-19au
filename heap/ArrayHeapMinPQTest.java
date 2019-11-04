@@ -2,9 +2,7 @@ package heap;
 
 import edu.princeton.cs.algs4.Stopwatch;
 import org.junit.Test;
-
 import java.util.Random;
-
 import static org.junit.Assert.*;
 
 public class ArrayHeapMinPQTest {

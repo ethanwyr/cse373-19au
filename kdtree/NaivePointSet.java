@@ -1,12 +1,14 @@
 package kdtree;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Naive nearest neighbor implementation using a linear scan.
  */
 public class NaivePointSet implements PointSet {
-    // TODO: add fields as necessary
+
+    private ArrayList<Point> nps;
 
     /**
      * Instantiates a new NaivePointSet with the given points.
@@ -15,8 +17,8 @@ public class NaivePointSet implements PointSet {
      *               after construction don't affect the point set)
      */
     public NaivePointSet(List<Point> points) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet; replace this with your code.");
+        nps = new ArrayList<>();
+        nps.addAll(points);
     }
 
     /**
@@ -25,7 +27,19 @@ public class NaivePointSet implements PointSet {
      */
     @Override
     public Point nearest(double x, double y) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet; replace this with your code.");
+        Point result = nps.get(0);
+        double minDis = nps.get(0).distanceSquaredTo(x, y);
+        double dis;
+        for (int i = 1; i < nps.size(); i++) {
+            dis = nps.get(i).distanceSquaredTo(x, y);
+            if (dis < minDis) {
+                minDis = dis;
+                result = nps.get(i);
+                if (minDis == 0.0) {
+                    break;
+                }
+            }
+        }
+        return result;
     }
 }
