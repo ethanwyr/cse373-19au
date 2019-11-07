@@ -43,7 +43,7 @@ public class DemoRunSeveralPuzzles {
             System.out.println(puzzleFile + ":");
             ShortestPathsSolver<BoardState> solver;
             try {
-                solver = new AStarSolver<>(spg, start, goal, 30);
+                solver = new AStarSolver<>(spg, start, goal, 60);
             } catch (UnsupportedOperationException e) {
                 System.out.println("AStarSolver doesn't seem to be implemented yet; using LazySolver instead.");
                 solver = new LazySolver<>(spg, start, goal, 30);

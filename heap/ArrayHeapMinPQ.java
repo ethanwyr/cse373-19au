@@ -8,6 +8,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private ArrayList<PriNode> heap;
     private ArrayList<PriNode> key;
     private int hashSize;
+    private PriNode goalNode;
 
     /**
      * one priority node, an item of type T with the given priority
@@ -193,6 +194,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         PriNode curr = key.get(index);
         while (curr != null) {
             if (curr.equals(goal)) {
+                goalNode = curr;
                 return true;
             }
             curr = curr.next;
@@ -258,18 +260,9 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (!contains(item)) {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
-        PriNode goal = new PriNode(item, 0);
-        int index = goal.hashCode() % hashSize;
-        PriNode curr = key.get(index);
-        while (curr != null) {
-            if (curr.equals(goal)) {
-                curr.setPriority(priority);
-                sink(curr.loc);
-                swim(curr.loc);
-                break;
-            }
-            curr = curr.next;
-        }
+        goalNode.setPriority(priority);
+        sink(goalNode.loc);
+        swim(goalNode.loc);
     }
 
     /**
@@ -279,6 +272,13 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     @Override
     public int size() {
         return heap.size() - 1;
+    }
+
+    public T getItem(T item) {
+        if (!contains(item)) {
+            throw new NoSuchElementException("PQ does not contain " + item);
+        }
+        return goalNode.item;
     }
 
 }

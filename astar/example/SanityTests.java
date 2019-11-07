@@ -1,6 +1,6 @@
 package astar.example;
 
-import astar.LazySolver;
+import astar.AStarSolver;
 import astar.ShortestPathsSolver;
 import astar.ShortestPathsSolver.SolverOutcome;
 import org.junit.Test;
@@ -42,7 +42,7 @@ public class SanityTests {
         WeightedDirectedGraph wdg = lectureGraph();
         int start = 0;
         int goal = 6;
-        ShortestPathsSolver<Integer> solver = new LazySolver<>(wdg, start, goal, 10);
+        ShortestPathsSolver<Integer> solver = new AStarSolver<>(wdg, start, goal, 10);
         List<Integer> actual = solver.solution();
         List<Integer> expected = List.of(0, 1, 4, 6);
         assertEquals(expected, actual);
@@ -57,7 +57,7 @@ public class SanityTests {
         WeightedDirectedGraph wdg = lectureGraph();
         int start = 0;
         int goal = 0;
-        ShortestPathsSolver<Integer> solver = new LazySolver<>(wdg, start, goal, 10);
+        ShortestPathsSolver<Integer> solver = new AStarSolver<>(wdg, start, goal, 10);
         List<Integer> actual = solver.solution();
         List<Integer> expected = List.of(0);
         assertEquals(expected, actual);
@@ -72,7 +72,7 @@ public class SanityTests {
         WeightedDirectedGraph wdg = lectureGraph();
         int start = 6;
         int goal = 0;
-        ShortestPathsSolver<Integer> solver = new LazySolver<>(wdg, start, goal, 10);
+        ShortestPathsSolver<Integer> solver = new AStarSolver<>(wdg, start, goal, 10);
         List<Integer> actual = solver.solution();
         List<Integer> expected = List.of();
         assertEquals(expected, actual);
