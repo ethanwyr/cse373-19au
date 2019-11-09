@@ -274,11 +274,4 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         return heap.size() - 1;
     }
 
-    public T getItem(T item) {
-        if (!contains(item)) {
-            throw new NoSuchElementException("PQ does not contain " + item);
-        }
-        return goalNode.item;
-    }
-
 }

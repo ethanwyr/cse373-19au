@@ -31,7 +31,7 @@ public class DemoRunSeveralPuzzles {
     };
 
     public static void main(String[] args) {
-        String[] puzzleFiles = hardPuzzles;
+        String[] puzzleFiles = elitePuzzles;
 
         System.out.println(puzzleFiles.length + " puzzle files being run.");
         for (String puzzleFile : puzzleFiles) {
@@ -43,7 +43,7 @@ public class DemoRunSeveralPuzzles {
             System.out.println(puzzleFile + ":");
             ShortestPathsSolver<BoardState> solver;
             try {
-                solver = new AStarSolver<>(spg, start, goal, 60);
+                solver = new AStarSolver<>(spg, start, goal, 40);
             } catch (UnsupportedOperationException e) {
                 System.out.println("AStarSolver doesn't seem to be implemented yet; using LazySolver instead.");
                 solver = new LazySolver<>(spg, start, goal, 30);

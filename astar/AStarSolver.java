@@ -4,8 +4,8 @@ import edu.princeton.cs.algs4.Stopwatch;
 import heap.ArrayHeapMinPQ;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @see ShortestPathsSolver for more method documentation
@@ -17,36 +17,16 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
     private int numState;
     private double timeSpent;
 
-    private ArrayList<IndexVertex> visit;
-    private ArrayList<Double> distTo;
-    private ArrayList<Integer> edgeTo;
-    private ArrayHeapMinPQ<IndexVertex> fringe;
+    private HashMap<Vertex, VInfo> visited;
+    private ArrayHeapMinPQ<Vertex> fringe;
 
-    // internal data type, represent a vertex and its index
-    private class IndexVertex {
-        private Vertex v;
-        private int loc;
+    private class VInfo {
+        private Double distTo;
+        private Vertex edgeTo;
 
-        IndexVertex(Vertex v, int loc) {
-            this.v = v;
-            this.loc = loc;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            IndexVertex that = (IndexVertex) o;
-            return Objects.equals(v, that.v);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(v);
+        VInfo(Double d, Vertex e) {
+            this.distTo = d;
+            this.edgeTo = e;
         }
     }
 
@@ -58,49 +38,48 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
     public AStarSolver(AStarGraph<Vertex> input, Vertex start, Vertex end, double timeout) {
         // initialization of the internal data structure and timer
         Stopwatch sw = new Stopwatch();
-        visit = new ArrayList<>();
-        distTo = new ArrayList<>();
-        edgeTo = new ArrayList<>();
+        visited = new HashMap<>();
         fringe = new ArrayHeapMinPQ<>();
         solution = new ArrayList<>();
 
         // add the start Vertex into internal data structure as a beginning
         numState = 0;
-        IndexVertex next = new IndexVertex(start, 0);
-        relax(start, 0, -1, input.estimatedDistanceToGoal(start, end));
+        relax(start, 0, null, input.estimatedDistanceToGoal(start, end));
 
         // visit all the vertex in the Priority Queue until time out.
-        IndexVertex currV;
-        int currI;
+        Vertex currV;
+        VInfo currInfo;
         double currDis;
         while (fringe.size() != 0 && sw.elapsedTime() < timeout) {
             // get next vertex in the PQ
             currV = fringe.removeSmallest();
-            currI = currV.loc;
-            currDis = distTo.get(currI);
-            numState++;
+            currInfo = visited.get(currV);
 
             // if the current vertex is the target return
-            if (currV.v.equals(end)) {
-                solutionWeight = currDis;
+            if (currV.equals(end)) {
+                solutionWeight = currInfo.distTo;
                 solution.add(end);
-                while (currI != 0) {
-                    currI = edgeTo.get(currI);
-                    solution.add(0, visit.get(currI).v);
+                while (currInfo.edgeTo != null) {
+                    currV = currInfo.edgeTo;
+                    currInfo = visited.get(currV);
+                    solution.add(0, currV);
                 }
                 outcome = SolverOutcome.SOLVED;
                 timeSpent = sw.elapsedTime();
                 return;
             }
 
+            // if not the target, increment the numState
+            numState++;
+
             // find and release all the edges
-            List<WeightedEdge<Vertex>> neighborEdges = input.neighbors(currV.v);
+            List<WeightedEdge<Vertex>> neighborEdges = input.neighbors(currV);
             for (WeightedEdge<Vertex> e : neighborEdges) {
-                relax(e.to(), currDis + e.weight(), currI, input.estimatedDistanceToGoal(e.to(), end));
+                relax(e.to(), currInfo.distTo + e.weight(), currV, input.estimatedDistanceToGoal(e.to(), end));
             }
         }
 
-        // if not return in the loop, outcome is unsolvable or timeout
+        // if not return in the loop, outcome is unsolvable or timeouts
         if (fringe.isEmpty()) {
             outcome = SolverOutcome.UNSOLVABLE;
         } else {
@@ -109,21 +88,20 @@ public class AStarSolver<Vertex> implements ShortestPathsSolver<Vertex> {
         timeSpent = sw.elapsedTime();
     }
 
-    private void relax(Vertex v, double weight, int from, double h) {
-        IndexVertex next = new IndexVertex(v, -1);
-        if (fringe.contains(next)) {
-            int index = fringe.getItem(next).loc;
-            if (weight < distTo.get(index)) {
-                distTo.set(index, weight);
-                edgeTo.set(index, from);
-                fringe.changePriority(next, weight + h);
+    private void relax(Vertex v, double weight, Vertex from, double h) {
+        VInfo info = visited.get(v);
+        if (info != null) {
+            if (weight < info.distTo) {
+                info.distTo = weight;
+                info.edgeTo = from;
+                if (fringe.contains(v)) {
+                    fringe.changePriority(v, weight + h);
+                }
             }
         } else {
-            next.loc = visit.size();
-            visit.add(next);
-            distTo.add(weight);
-            edgeTo.add(from);
-            fringe.add(next, weight + h);
+            info = new VInfo(weight, from);
+            visited.put(v, info);
+            fringe.add(v, weight + h);
         }
     }
 
