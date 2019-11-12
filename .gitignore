@@ -3,6 +3,9 @@
 !**.java
 !**.txt
 !**.json
+!**.html
+!**.png
+!static/**
 !.expelimicate
 !.gitignore
 *.class
