@@ -5,9 +5,17 @@ import huskymaps.params.RasterResult;
 
 import java.util.Objects;
 
+import static huskymaps.utils.Constants.ROOT_LRLON;
+import static huskymaps.utils.Constants.ROOT_LRLAT;
+import static huskymaps.utils.Constants.ROOT_ULLON;
+import static huskymaps.utils.Constants.ROOT_ULLAT;
+import static huskymaps.utils.Constants.LON_PER_TILE;
+import static huskymaps.utils.Constants.LAT_PER_TILE;
+import static huskymaps.utils.Constants.NUM_X_TILES_AT_DEPTH;
+import static huskymaps.utils.Constants.NUM_Y_TILES_AT_DEPTH;
+import static huskymaps.utils.Constants.MIN_ZOOM_LEVEL;
 import static huskymaps.utils.Constants.MIN_X_TILE_AT_DEPTH;
 import static huskymaps.utils.Constants.MIN_Y_TILE_AT_DEPTH;
-import static huskymaps.utils.Constants.MIN_ZOOM_LEVEL;
 
 /** Application logic for the RasterAPIHandler. */
 public class Rasterer {
@@ -31,9 +39,42 @@ public class Rasterer {
      * @return RasterResult
      */
     public static RasterResult rasterizeMap(RasterRequest request) {
-        System.out.println("Since you haven't implemented rasterizeMap, nothing is displayed in your browser.");
-        // TODO
-        Tile[][] grid = null;
+        Tile[][] grid;
+        int d = request.depth;
+        if (request.ullon >= ROOT_LRLON || request.lrlon <= ROOT_ULLON ||
+                request.ullat <= ROOT_LRLAT || request.lrlat >= ROOT_ULLAT) {
+            // a location that is completely outside of the Seattle map region
+            grid = new Tile[1][1];
+            grid[0][0] = new Tile(d, 0, 0);
+        } else {
+            int x = (int) ((request.ullon - ROOT_ULLON) / LON_PER_TILE[d]);
+            int xL = (int) ((request.lrlon - ROOT_ULLON) / LON_PER_TILE[d]);
+            int y = (int) ((ROOT_ULLAT - request.ullat) / LAT_PER_TILE[d]);
+            int yL = (int) ((ROOT_ULLAT - request.lrlat) / LAT_PER_TILE[d]);
+            // If the browser goes to the edge of the map beyond where data is available.
+            // If the query box is so zoomed out that it includes the entire dataset.
+            if (x < 0) {
+                x = 0;
+            }
+            if (xL >= NUM_X_TILES_AT_DEPTH[d]) {
+                xL = NUM_X_TILES_AT_DEPTH[d] - 1;
+            }
+            if (y < 0) {
+                y = 0;
+            }
+            if (yL >= NUM_Y_TILES_AT_DEPTH[d]) {
+                yL = NUM_Y_TILES_AT_DEPTH[d] - 1;
+            }
+            // get the correct result
+            xL = xL - x + 1;
+            yL = yL - y + 1;
+            grid = new Tile[yL][xL];
+            for (int i = 0; i < yL; i++) {
+                for (int j = 0; j < xL; j++) {
+                    grid[i][j] = new Tile(d, x + j, y + i);
+                }
+            }
+        }
         return new RasterResult(grid);
     }
 

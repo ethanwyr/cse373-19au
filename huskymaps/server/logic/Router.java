@@ -1,5 +1,6 @@
 package huskymaps.server.logic;
 
+import astar.AStarSolver;
 import huskymaps.StreetMapGraph;
 import huskymaps.params.RouteRequest;
 
@@ -17,10 +18,9 @@ public class Router {
      * @return A list of node id's in the order visited on the shortest path.
      */
     public static List<Long> shortestPath(StreetMapGraph g, RouteRequest request) {
-        // long src = g.closest(request.startLat, request.startLon);
-        // long dest = g.closest(request.endLat, request.endLon);
-        // return new AStarSolver<>(g, src, dest, 20).solution();
-        return null;
+        long src = g.closest(request.startLat, request.startLon);
+        long dest = g.closest(request.endLat, request.endLon);
+        return new AStarSolver<>(g, src, dest, 20).solution();
     }
 
 
