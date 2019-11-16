@@ -40,7 +40,7 @@ public class RoutingAPIHandler extends APIRouteHandler<RouteRequest, RouteResult
     /** Takes the current route and converts it into an HTML-friendly String. */
     private String getDirectionsText() {
         List<NavigationDirection> directions = Router.routeDirections(SEMANTIC_STREET_GRAPH, ROUTE_LIST);
-        if (directions.isEmpty()) {
+        if (directions == null || directions.isEmpty()) {
             return "";
         }
         StringBuilder sb = new StringBuilder();
