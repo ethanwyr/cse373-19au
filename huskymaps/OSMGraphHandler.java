@@ -2,6 +2,7 @@ package huskymaps;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -11,9 +12,10 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,11 +64,18 @@ class OSMGraphHandler extends DefaultHandler {
         this.g = g;
         this.nodeBuilder = g.nodeBuilder();
         this.nodePath = new ArrayDeque<>();
-        try (FileReader reader = new FileReader(PLACES_PATH)) {
-            places = new Gson().fromJson(reader, new TypeToken<HashMap<String, Integer>>() {}.getType());
-        } catch (IOException e) {
+        try {
+            InputStream fileStream;
+            if (!HEROKU_DEPLOYMENT) {
+                File inputFile = new File(PLACES_PATH);
+                fileStream = new FileInputStream(inputFile);
+            } else {
+                fileStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(PLACES_PATH);
+            }
+            Reader fileReader = new InputStreamReader(fileStream);
+            places = new Gson().fromJson(fileReader, new TypeToken<HashMap<String, Integer>>() {}.getType());
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
-            System.out.println("Location importance data file not found, defaulting to 0.");
             places = Map.of();
         }
     }
