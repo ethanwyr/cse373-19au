@@ -172,13 +172,7 @@ public class AStarSeamCarver implements SeamCarver {
 
         @Override
         public double estimatedDistanceToGoal(Point s, Point goal) {
-            double dis;
-            if (goal.d() == 0) {
-                dis = goal.x() - s.x();
-            } else {
-                dis = goal.y() - s.y();
-            }
-            return dis;
+            return 0.0;
         }
     }
 
