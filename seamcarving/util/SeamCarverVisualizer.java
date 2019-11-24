@@ -91,8 +91,10 @@ public class SeamCarverVisualizer {
         SeamCarverVisualizer scv = new SeamCarverVisualizer();
         if (HORIZONTAL_SEAM) {
             scv.visualizeHorizontalCarve(sc, NUM_PIXELS);
+            scv.visualizeVerticalCarve(sc, NUM_PIXELS);
         } else {
             scv.visualizeVerticalCarve(sc, NUM_PIXELS);
+            scv.visualizeHorizontalCarve(sc, NUM_PIXELS);
         }
     }
 }

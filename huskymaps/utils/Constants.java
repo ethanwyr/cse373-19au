@@ -70,7 +70,7 @@ public class Constants {
     public static final double EPSILON = 0.000001;
     public static final int DECIMAL_PLACES = 5;
 
-    public static final String BASE_DIR_PATH = "data/";
+    public static final String BASE_DIR_PATH = "";
 
     /**
      * The OSM XML file path. Downloaded from <a href="http://download.bbbike.org/osm/">here</a>
@@ -102,7 +102,7 @@ public class Constants {
     public static final int HALT_RESPONSE = 500;
 
     /** Flag for deploying the app to the web. */
-    public static final boolean HEROKU_DEPLOYMENT = false;
+    public static final boolean HEROKU_DEPLOYMENT = true;
 
     /** Default port for serving the application locally. */
     public static final int PORT = 8080;
