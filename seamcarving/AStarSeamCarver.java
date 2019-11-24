@@ -176,7 +176,7 @@ public class AStarSeamCarver implements SeamCarver {
             if (goal.d() == 0) {
                 dis = goal.x() - s.x();
             } else {
-                dis = goal.x() - s.x();
+                dis = goal.y() - s.y();
             }
             return dis;
         }
